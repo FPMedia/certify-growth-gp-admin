@@ -4,7 +4,7 @@
 
 | Repo | Railway service | Port (local) |
 |------|-----------------|--------------|
-| `certify-growth-gp-admin` | intended `admin` — **not live yet** | 3001 |
+| `certify-growth-gp-admin` | `admin` — https://admin-production-82c8.up.railway.app | 3001 |
 
 ## Routes
 
@@ -16,7 +16,7 @@
 
 ## How this used to work in production
 
-Catalog/system admin previously lived **on the web app** at `/admin` (same gateway APIs). That UI was extracted here. Production web still has **no** `/admin` route: https://web-production-aae47.up.railway.app/admin returns **404**. The APIs (`/api/admin/*` → catalog, identity users/companies) are unchanged and live. Production admin is down because this frontend is not a Railway service yet.
+Catalog/system admin previously lived **on the web app** at `/admin` (same gateway APIs). That UI was extracted here. Production web still has **no** `/admin` route: https://web-production-aae47.up.railway.app/admin returns **404**. The APIs (`/api/admin/*` → catalog, identity users/companies) are unchanged and live. Production admin UI is https://admin-production-82c8.up.railway.app.
 
 ## Local development
 
@@ -33,8 +33,8 @@ With `NEXT_PUBLIC_DEV_AUTH=true`, the app uses `Bearer dev-token` and expects th
 
 Reuse **existing** services. Mirror the **web** service env (not new backends):
 
-1. Init git + GitHub remote `FPMedia/certify-growth-gp-admin` (this tree is not a git repo locally yet), **or** `railway up` from this directory after `railway link`.
-2. Add a Railway service in project `cc207980-c992-4062-8956-d1e8889bc220` named `admin`, Dockerfile build (`railway.toml` — same pattern as web).
+1. Git repo is initialized (`main`). GitHub `FPMedia/certify-growth-gp-admin` still needs `gh repo create` (private) + Railway GitHub-link for auto-deploy; current production deploy used `railway up`.
+2. Railway service `admin` exists in project `cc207980-c992-4062-8956-d1e8889bc220` (Dockerfile / `railway.toml`, same pattern as web). Public origin: https://admin-production-82c8.up.railway.app.
 3. Set:
 
 | Variable | Value |
@@ -45,7 +45,7 @@ Reuse **existing** services. Mirror the **web** service env (not new backends):
 | `NEXT_PUBLIC_FIREBASE_*` | **Same values as the web service** |
 | `NEXT_PUBLIC_DEV_AUTH` | unset / `false` |
 
-4. On the **web** service, set runtime **`ADMIN_URL`** to this service's public origin (whatever Railway assigns — do not invent a hostname). Missing `ADMIN_URL` hides the Admin nav item.
+4. On the **web** service, runtime **`ADMIN_URL`** is https://admin-production-82c8.up.railway.app (no trailing slash). Missing `ADMIN_URL` hides the Admin nav item.
 
 `WEB_URL` is read at runtime. Do not add it as a Docker `NEXT_PUBLIC_*` build ARG.
 
