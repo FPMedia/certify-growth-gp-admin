@@ -1,15 +1,20 @@
 /**
  * Public origin of certify-growth-gp-web ("Main app" link).
  *
- * Prefer runtime `WEB_URL` — Next inlines `NEXT_PUBLIC_*` at `next build`, and
- * the admin Dockerfile does not pass companion URLs as build ARGs.
+ * Read via `process.env[name]` (dynamic key) so Next cannot inline the value at
+ * `next build`.
  */
-export function getWebUrl(): string | undefined {
-  const runtime = process.env.WEB_URL?.trim();
-  if (runtime) return runtime.replace(/\/$/, '');
+function readEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  return value ? value.replace(/\/$/, '') : undefined;
+}
 
-  const pub = process.env.NEXT_PUBLIC_WEB_URL?.trim();
-  if (pub) return pub.replace(/\/$/, '');
+export function getWebUrl(): string | undefined {
+  const runtime = readEnv('WEB_URL');
+  if (runtime) return runtime;
+
+  const pub = readEnv('NEXT_PUBLIC_WEB_URL');
+  if (pub) return pub;
 
   if (process.env.NODE_ENV !== 'production') return 'http://localhost:3000';
   return undefined;

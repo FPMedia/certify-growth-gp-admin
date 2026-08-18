@@ -51,6 +51,10 @@ Reuse **existing** services. Mirror the **web** service env (not new backends):
 
 Keep `@types/react-dom@^18` in `devDependencies` so `npm ci` does not pull React 19 types via `@tiptap/react`'s peer and fail with `ERESOLVE`.
 
+## Branding
+
+`BrandLogo` (header and login) uses `public/img/growth-predictor-logo-website.png` — the same **Growthpredictor** wordmark as web (navy “Growth” with arrow-G, red italic “predictor”). Copy that file from `certify-growth-gp-web/public/img/` if it is missing; without it Next.js `/_next/image` serves a broken image.
+
 ## Catalog copy
 
 Long-form catalog fields (questionnaire intro, element paragraphs, question labels/concepts) use a TipTap WYSIWYG editor. HTML is stored in the catalog service; short fields (names, scores, feedback phrases, weights) stay plain inputs.
