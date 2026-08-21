@@ -184,7 +184,7 @@ export function AdminDashboard() {
   }
 
   async function save() {
-    if (!config) return;
+    if (!config || !crudTab) return;
     setSaving(true);
     setError(null);
     try {
@@ -201,14 +201,18 @@ export function AdminDashboard() {
         'paragraph2',
         'teamParagraph',
       ]);
+      // Only send fields the catalog update/create DTOs accept. Parent FKs
+      // (elementId, questionnaireId) are create-only on PATCH.
       const body: Record<string, unknown> = {};
-      for (const [k, v] of Object.entries(form)) {
-        if (v === '') continue;
-        if (v === 'true' || v === 'false') body[k] = v === 'true';
-        else if (!htmlKeys.has(k) && !Number.isNaN(Number(v))) {
-          body[k] = Number(v);
+      for (const field of getFormFields(crudTab)) {
+        if (editing && field.createOnly) continue;
+        const v = form[field.key];
+        if (v === undefined || v === '') continue;
+        if (v === 'true' || v === 'false') body[field.key] = v === 'true';
+        else if (!htmlKeys.has(field.key) && !Number.isNaN(Number(v))) {
+          body[field.key] = Number(v);
         } else {
-          body[k] = v;
+          body[field.key] = v;
         }
       }
 
@@ -357,15 +361,21 @@ export function AdminDashboard() {
           </DialogHeader>
 
           <div className="grid gap-4 py-2">
-            {getFormFields(crudTab).map((field) => (
+            {getFormFields(crudTab).map((field) => {
+              const readOnly = Boolean(editing && field.createOnly);
+              return (
               <div key={field.key} className="space-y-2">
-                <Label htmlFor={field.key}>{field.label}</Label>
+                <Label htmlFor={field.key}>
+                  {field.label}
+                  {readOnly ? ' (fixed on edit)' : ''}
+                </Label>
                 {field.multiline ? (
                   <RichTextEditor
                     value={form[field.key] ?? ''}
                     onChange={(html) => setForm((f) => ({ ...f, [field.key]: html }))}
                     placeholder={field.label}
                     minHeightClassName="min-h-[140px]"
+                    disabled={readOnly}
                   />
                 ) : (
                   <Input
@@ -374,10 +384,12 @@ export function AdminDashboard() {
                     value={form[field.key] ?? ''}
                     onChange={(e) => setForm((f) => ({ ...f, [field.key]: e.target.value }))}
                     placeholder={field.placeholder}
+                    disabled={readOnly}
                   />
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
 
           <DialogFooter>
@@ -395,14 +407,30 @@ export function AdminDashboard() {
   );
 }
 
-function getFormFields(tab: CrudTab) {
+type FormField = {
+  key: string;
+  label: string;
+  type?: string;
+  multiline?: boolean;
+  placeholder?: string;
+  /** Present on create only; catalog PATCH DTOs reject these keys. */
+  createOnly?: boolean;
+};
+
+function getFormFields(tab: CrudTab): FormField[] {
   switch (tab) {
     case 'elements':
       return [
         { key: 'name', label: 'Name' },
         { key: 'group', label: 'Group (1–3)', type: 'number' },
         { key: 'order', label: 'Order', type: 'number' },
-        { key: 'questionnaireId', label: 'Questionnaire ID', type: 'number', placeholder: '1' },
+        {
+          key: 'questionnaireId',
+          label: 'Questionnaire ID',
+          type: 'number',
+          placeholder: '1',
+          createOnly: true,
+        },
         { key: 'shortDescription', label: 'Short description', multiline: true },
         { key: 'paragraph', label: 'Paragraph', multiline: true },
         { key: 'paragraph2', label: 'Paragraph 2', multiline: true },
@@ -411,7 +439,7 @@ function getFormFields(tab: CrudTab) {
     case 'questions':
       return [
         { key: 'label', label: 'Label', multiline: true },
-        { key: 'elementId', label: 'Element ID', type: 'number' },
+        { key: 'elementId', label: 'Element ID', type: 'number', createOnly: true },
         { key: 'order', label: 'Order', type: 'number' },
         { key: 'weighting', label: 'Weighting', type: 'number' },
         { key: 'isNegative', label: 'Is negative (true/false)' },
