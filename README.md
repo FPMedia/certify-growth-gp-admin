@@ -59,6 +59,8 @@ Keep `@types/react-dom@^18` in `devDependencies` so `npm ci` does not pull React
 
 Long-form catalog fields (questionnaire intro, element paragraphs, question labels/concepts) use a TipTap WYSIWYG editor. HTML is stored in the catalog service; short fields (names, scores, feedback phrases, weights) stay plain inputs.
 
+The intro tab has a questionnaire selector (Growth Predictor Roadmap vs Leadership Effectiveness). Feedback bands and group weightings are shared across questionnaires. When creating an element, set `questionnaireId` explicitly (1 or 2) — there is no default of 1.
+
 On **edit**, parent foreign keys (`elementId` on questions, `questionnaireId` on elements) are read-only and omitted from PATCH bodies — the catalog `Update*` DTOs reject those properties (`property … should not exist`). Set them only when creating a record.
 
 ## Access control

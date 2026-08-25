@@ -222,7 +222,10 @@ export function AdminDashboard() {
           body: JSON.stringify(body),
         });
       } else {
-        if (tab === 'elements' && !body.questionnaireId) body.questionnaireId = 1;
+        if (tab === 'elements' && !body.questionnaireId) {
+          setError('Questionnaire ID is required when creating an element.');
+          return;
+        }
         await apiFetch(config.endpoint, {
           method: 'POST',
           body: JSON.stringify(body),
@@ -428,7 +431,7 @@ function getFormFields(tab: CrudTab): FormField[] {
           key: 'questionnaireId',
           label: 'Questionnaire ID',
           type: 'number',
-          placeholder: '1',
+          placeholder: '1 or 2',
           createOnly: true,
         },
         { key: 'shortDescription', label: 'Short description', multiline: true },

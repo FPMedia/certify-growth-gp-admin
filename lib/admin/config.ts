@@ -125,7 +125,7 @@ export const CRUD_CONFIGS: Record<string, CrudConfig> = {
   },
   matrices: {
     title: 'Group weightings',
-    description: 'Score-to-weighting lookup for group calculations.',
+    description: 'Score-to-weighting lookup for group calculations. Shared by all questionnaires.',
     listPath: '/admin/group-weightings-matrices',
     createPath: '/admin/group-weightings-matrices',
     updatePath: (id) => `/admin/group-weightings-matrices/${id}`,

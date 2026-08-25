@@ -2,12 +2,24 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { apiFetch } from '@/lib/api';
-import { QUESTIONNAIRE_ID } from '@/lib/questionnaire';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+
+interface QuestionnaireListItem {
+  id: number;
+  name: string;
+}
 
 interface QuestionnaireRecord {
   id: number;
@@ -16,6 +28,8 @@ interface QuestionnaireRecord {
 }
 
 export function QuestionnaireIntroPanel() {
+  const [options, setOptions] = useState<QuestionnaireListItem[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [intro, setIntro] = useState('');
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(true);
@@ -23,11 +37,18 @@ export function QuestionnaireIntroPanel() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
+  const loadList = useCallback(async () => {
+    const rows = await apiFetch<QuestionnaireListItem[]>('/admin/questionnaires');
+    setOptions(rows);
+    setSelectedId((current) => current ?? rows[0]?.id ?? null);
+    return rows;
+  }, []);
+
+  const loadRecord = useCallback(async (id: number) => {
     setLoading(true);
     setError(null);
     try {
-      const record = await apiFetch<QuestionnaireRecord>(`/admin/questionnaires/${QUESTIONNAIRE_ID}`);
+      const record = await apiFetch<QuestionnaireRecord>(`/admin/questionnaires/${id}`);
       setIntro(record.introParagraph);
       setName(record.name);
     } catch (e) {
@@ -38,15 +59,24 @@ export function QuestionnaireIntroPanel() {
   }, []);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    void loadList().catch((e: Error) => {
+      setError(e.message);
+      setLoading(false);
+    });
+  }, [loadList]);
+
+  useEffect(() => {
+    if (selectedId == null) return;
+    void loadRecord(selectedId);
+  }, [loadRecord, selectedId]);
 
   async function save() {
+    if (selectedId == null) return;
     setSaving(true);
     setError(null);
     setNotice(null);
     try {
-      await apiFetch(`/admin/questionnaires/${QUESTIONNAIRE_ID}`, {
+      await apiFetch(`/admin/questionnaires/${selectedId}`, {
         method: 'PATCH',
         body: JSON.stringify({ introParagraph: intro }),
       });
@@ -65,7 +95,7 @@ export function QuestionnaireIntroPanel() {
         <CardDescription>
           {name ? (
             <>
-              Shown at the top of the questionnaire landing page for <strong>{name}</strong>. Format
+              Shown at the top of the questionnaire landing card for <strong>{name}</strong>. Format
               headings, lists, and emphasis visually.
             </>
           ) : (
@@ -86,6 +116,26 @@ export function QuestionnaireIntroPanel() {
             <AlertDescription>{notice}</AlertDescription>
           </Alert>
         )}
+        {options.length > 1 && (
+          <div className="space-y-2">
+            <Label htmlFor="questionnaire-select">Questionnaire</Label>
+            <Select
+              value={selectedId != null ? String(selectedId) : undefined}
+              onValueChange={(value) => setSelectedId(Number(value))}
+            >
+              <SelectTrigger id="questionnaire-select" className="max-w-sm">
+                <SelectValue placeholder="Select a questionnaire" />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option.id} value={String(option.id)}>
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
         {loading ? (
           <Skeleton className="h-64 w-full rounded-md" />
         ) : (
@@ -98,7 +148,7 @@ export function QuestionnaireIntroPanel() {
         )}
       </CardContent>
       <CardFooter>
-        <Button type="button" onClick={() => void save()} disabled={loading || saving}>
+        <Button type="button" onClick={() => void save()} disabled={loading || saving || selectedId == null}>
           {saving ? 'Saving…' : 'Save intro'}
         </Button>
       </CardFooter>
