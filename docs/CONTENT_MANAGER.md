@@ -58,7 +58,8 @@ Use the search box above the sections, type a phrase you recognise, press **Sear
 ### Elements & questions
 - Expand a group → click an **element** or a **question** to open the editor.
 - **Paragraph** text may include `**level**`, `**verb**`, `**adjective**`, `**focus**` — those are replaced automatically from Feedback phrases based on the person’s score. Do not remove the asterisks if you still want that behaviour.
-- Fields marked **Not currently shown in the live app** (e.g. some CEO labels, paragraph 2) are stored for later use; changing them will not change what users see today.
+- Fields marked **Not currently shown in the live app** (e.g. paragraph 2) are stored for later use; changing them will not change what users see today.
+- **CEO question labels** are prompts for Q1/Q2 in the web app’s Roadmap notes panel. See the web [Roadmap notes user guide](../../certify-growth-gp-web/docs/ROADMAP_NOTES.md).
 
 ### Feedback phrases
 - Shared across **all** questionnaires.
@@ -76,6 +77,8 @@ Use the search box above the sections, type a phrase you recognise, press **Sear
 - **CEO question labels** — these are **prompts** for the Roadmap notes panel, not the note text itself. Editing a label does not change what someone already wrote. New prompt wording shows on reports after recompile / new completion. **Note bodies** (what the CEO, team leader, or individual saves) update live for everyone—no recompile.
 
 If a client says “I changed the text but my old report looks the same,” that is expected for report copy until recompile / new completion—not for saved roadmap notes.
+
+**Deploys do not reset your CMS edits.** Production services never run database seed. Catalog wording you save here stays in the live database.
 
 ---
 
