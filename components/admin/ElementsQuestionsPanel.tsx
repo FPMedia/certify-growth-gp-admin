@@ -385,22 +385,22 @@ export function ElementsQuestionsPanel({
                     key: 'ceoQuestionLabel',
                     label: 'CEO question label',
                     kind: 'rich',
-                    where: 'Stored in the catalog',
+                    where: 'Prompt for company note Q1 on this element in the report notes panel',
                   }}
                   value={String(form.ceoQuestionLabel ?? '')}
                   onChange={(v) => setForm((f) => ({ ...f, ceoQuestionLabel: v }))}
-                  extraHint="Not currently shown in the live app UI."
+                  extraHint="Prompt only—does not change saved note text. New label wording appears after report recompile / new completion."
                 />
                 <ContentFieldEditor
                   field={{
                     key: 'ceoQuestionLabel2',
                     label: 'CEO question label 2',
                     kind: 'rich',
-                    where: 'Stored in the catalog',
+                    where: 'Prompt for company note Q2 on this element in the report notes panel',
                   }}
                   value={String(form.ceoQuestionLabel2 ?? '')}
                   onChange={(v) => setForm((f) => ({ ...f, ceoQuestionLabel2: v }))}
-                  extraHint="Not currently shown in the live app UI."
+                  extraHint="Prompt only—does not change saved note text. New label wording appears after report recompile / new completion."
                 />
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">

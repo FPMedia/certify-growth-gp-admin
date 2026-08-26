@@ -22,6 +22,8 @@ Catalog/system admin previously lived **on the web app** at `/admin` (same gatew
 
 ## Content CMS
 
+**User guide for Content Managers:** [docs/CONTENT_MANAGER.md](docs/CONTENT_MANAGER.md)
+
 The **Content** tab (default landing for all admin roles) lets a content manager edit every piece of free text stored in the catalog database, organised by **where it appears**:
 
 1. Questionnaire landing  
@@ -33,7 +35,7 @@ The **Content** tab (default landing for all admin roles) lets a content manager
 
 Search finds matching copy within the selected questionnaire and jumps to the right section. Long-form fields use TipTap; short phrases use plain inputs. Field cards include a **Where this appears** hint. Report fields note `{{user_name}}` / score interpolation; element paragraphs note `**level**` / `**verb**` / feedback tokens. Save notices remind that **already-compiled reports** keep baked-in wording until recompile or a new completion.
 
-Stored but not rendered in the live product (`paragraph2`, CEO question labels) remain editable with an explicit “not currently shown” note.
+Stored but not rendered in the live product (`paragraph2`) remain editable with an explicit “not currently shown” note. **CEO question labels** (`ceoQuestionLabel`, `ceoQuestionLabel2`) are **prompts only** for per-element company notes (Q1 / Q2) in the web **Roadmap notes** panel (a third **General note** uses a fixed label). Changing a label does not alter saved note text; the new prompt wording appears on reports after recompile or a new completion. The note bodies themselves are live in identity and do not require recompile.
 
 Legacy `?tab=catalog` still opens Content. The old table-style Catalog CRUD UI is replaced by this CMS.
 
