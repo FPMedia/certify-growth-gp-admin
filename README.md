@@ -10,13 +10,32 @@
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Admin dashboard (catalog + system tabs) |
+| `/` | Admin dashboard (`?tab=content` default; `?tab=system` for companies/users) |
 | `/login` | Firebase sign-in for admin roles |
 | `/api/*` | Runtime proxy to the **existing** gateway (`GATEWAY_URL`) |
+
+Content CMS deep links: `/?tab=content&questionnaire=1&section=personal` (also `section=landing|team|leader|company|groups|elements|feedback|scoring`, optional `field=`).
 
 ## How this used to work in production
 
 Catalog/system admin previously lived **on the web app** at `/admin` (same gateway APIs). That UI was extracted here. Production web still has **no** `/admin` route: https://web-production-aae47.up.railway.app/admin returns **404**. The APIs (`/api/admin/*` → catalog, identity users/companies) are unchanged and live. Production admin UI is https://admin-production-82c8.up.railway.app.
+
+## Content CMS
+
+The **Content** tab (default landing for all admin roles) lets a content manager edit every piece of free text stored in the catalog database, organised by **where it appears**:
+
+1. Questionnaire landing  
+2. Personal / Team / Leadership team / Company report copy  
+3. Report groups (Adapt / Innovate|Growth / Execute — from `catalog.report_groups`)  
+4. Elements & questions (hierarchical tree)  
+5. Feedback phrases (shared score bands)  
+6. Scoring (advanced) — weighting matrices only  
+
+Search finds matching copy within the selected questionnaire and jumps to the right section. Long-form fields use TipTap; short phrases use plain inputs. Field cards include a **Where this appears** hint. Report fields note `{{user_name}}` / score interpolation; element paragraphs note `**level**` / `**verb**` / feedback tokens. Save notices remind that **already-compiled reports** keep baked-in wording until recompile or a new completion.
+
+Stored but not rendered in the live product (`paragraph2`, CEO question labels) remain editable with an explicit “not currently shown” note.
+
+Legacy `?tab=catalog` still opens Content. The old table-style Catalog CRUD UI is replaced by this CMS.
 
 ## Local development
 
@@ -55,16 +74,8 @@ Keep `@types/react-dom@^18` in `devDependencies` so `npm ci` does not pull React
 
 `BrandLogo` (header and login) uses `public/img/growth-predictor-logo-website.png` — the same **Growthpredictor** wordmark as web (navy “Growth” with arrow-G, red italic “predictor”). Copy that file from `certify-growth-gp-web/public/img/` if it is missing; without it Next.js `/_next/image` serves a broken image.
 
-## Catalog copy
-
-Long-form catalog fields (questionnaire intro, element paragraphs, question labels/concepts) use a TipTap WYSIWYG editor. HTML is stored in the catalog service; short fields (names, scores, feedback phrases, weights) stay plain inputs.
-
-The intro tab has a questionnaire selector (Growth Predictor Roadmap vs Leadership Effectiveness). Feedback bands and group weightings are shared across questionnaires. When creating an element, set `questionnaireId` explicitly (1 or 2) — there is no default of 1.
-
-On **edit**, parent foreign keys (`elementId` on questions, `questionnaireId` on elements) are read-only and omitted from PATCH bodies — the catalog `Update*` DTOs reject those properties (`property … should not exist`). Set them only when creating a record.
-
 ## Access control
 
 - **App boundary**: non-admin roles see an access-denied screen after sign-in.
-- **Tab gating**: `SUPER_ADMIN` sees system + catalog tabs; `CONTENT_MANAGER` sees catalog only.
+- **Tab gating**: `SUPER_ADMIN` sees Content + Companies & users; `CONTENT_MANAGER` sees Content only.
 - **Backend**: admin API routes remain protected by the existing gateway/identity services (unchanged).
