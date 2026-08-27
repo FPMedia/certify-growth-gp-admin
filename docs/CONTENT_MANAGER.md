@@ -59,7 +59,7 @@ Use the search box above the sections, type a phrase you recognise, press **Sear
 - Expand a group → click an **element** or a **question** to open the editor.
 - **Paragraph** text may include `**level**`, `**verb**`, `**adjective**`, `**focus**` — those are replaced automatically from Feedback phrases based on the person’s score. Do not remove the asterisks if you still want that behaviour.
 - Fields marked **Not currently shown in the live app** (e.g. paragraph 2) are stored for later use; changing them will not change what users see today.
-- **CEO question labels** are prompts for Q1/Q2 in the web app’s Roadmap notes panel. See the web [Roadmap notes user guide](../../certify-growth-gp-web/docs/ROADMAP_NOTES.md).
+- **CEO question labels** are prompts for Q1/Q2 on each capability in report details. See the web [Roadmap notes user guide](../../certify-growth-gp-web/docs/ROADMAP_NOTES.md).
 
 ### Feedback phrases
 - Shared across **all** questionnaires.
@@ -74,7 +74,7 @@ Use the search box above the sections, type a phrase you recognise, press **Sear
 
 - **Questionnaire screens** — usually immediately after save (refresh the main app if needed).
 - **Reports already generated** — keep the **old** wording until a System Admin **recompiles** that report, or until the person completes a **new** submission and a new report is built.
-- **CEO question labels** — these are **prompts** for the Roadmap notes panel, not the note text itself. Editing a label does not change what someone already wrote. New prompt wording shows on reports after recompile / new completion. **Note bodies** (what the CEO, team leader, or individual saves) update live for everyone—no recompile.
+- **CEO question labels** — these are **prompts** for company notes on each capability in report details, not the note text itself. Editing a label does not change what someone already wrote. New prompt wording shows on reports after recompile / new completion. **Note bodies** (what the CEO, team leader, or individual saves) update live for everyone—no recompile.
 
 If a client says “I changed the text but my old report looks the same,” that is expected for report copy until recompile / new completion—not for saved roadmap notes.
 
@@ -91,7 +91,7 @@ Long fields use a visual editor (bold, lists, links, alignment). Prefer that ove
 ## What to ask a developer for
 
 - Changing button labels or navigation chrome in the main app (not in this CMS).
-- Turning on unused fields (`paragraph2`) in the live reports. CEO question labels are prompts for Q1/Q2 in the Roadmap notes panel (saved notes are live and separate).
+- Turning on unused fields (`paragraph2`) in the live reports. CEO question labels are prompts for Q1/Q2 on each capability in report details (saved notes are live and separate).
 - Likert scale labels (Never → Always) or score-band colour legends.
 - Access for new Content Managers (a System Admin assigns the Content Manager role).
 

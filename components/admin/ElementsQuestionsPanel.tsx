@@ -385,7 +385,7 @@ export function ElementsQuestionsPanel({
                     key: 'ceoQuestionLabel',
                     label: 'CEO question label',
                     kind: 'rich',
-                    where: 'Prompt for company note Q1 on this element in the report notes panel',
+                    where: 'Prompt for company note Q1 on this element in report capability details',
                   }}
                   value={String(form.ceoQuestionLabel ?? '')}
                   onChange={(v) => setForm((f) => ({ ...f, ceoQuestionLabel: v }))}
@@ -396,7 +396,7 @@ export function ElementsQuestionsPanel({
                     key: 'ceoQuestionLabel2',
                     label: 'CEO question label 2',
                     kind: 'rich',
-                    where: 'Prompt for company note Q2 on this element in the report notes panel',
+                    where: 'Prompt for company note Q2 on this element in report capability details',
                   }}
                   value={String(form.ceoQuestionLabel2 ?? '')}
                   onChange={(v) => setForm((f) => ({ ...f, ceoQuestionLabel2: v }))}
