@@ -58,7 +58,7 @@ Use the search box above the sections, type a phrase you recognise, press **Sear
 ### Elements & questions
 - Expand a group → click an **element** or a **question** to open the editor.
 - **Paragraph** text may include `**level**`, `**verb**`, `**adjective**`, `**focus**` — those are replaced automatically from Feedback phrases based on the person’s score. Do not remove the asterisks if you still want that behaviour.
-- Fields marked **Not currently shown in the live app** (e.g. paragraph 2) are stored for later use; changing them will not change what users see today.
+- Fields marked **Not currently shown in the live app** (e.g. paragraph 2, company **Next steps**) are stored for later use; changing them will not change what users see today.
 - **CEO question labels** are prompts for Q1/Q2 on each capability in report details. See the web [Roadmap notes user guide](../../certify-growth-gp-web/docs/ROADMAP_NOTES.md).
 
 ### Feedback phrases

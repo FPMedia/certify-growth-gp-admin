@@ -139,6 +139,7 @@ export function QuestionnaireCopyPanel({
                 value={form[field.key] ?? ''}
                 onChange={(value) => setForm((f) => ({ ...f, [field.key]: value }))}
                 disabled={saving}
+                extraHint={field.extraHint}
               />
             </div>
           ))

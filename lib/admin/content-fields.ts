@@ -35,6 +35,7 @@ export interface CopyFieldDef {
   /** Show {{user_name}} / {{report_date}} helper */
   interpolates?: boolean;
   required?: boolean;
+  extraHint?: string;
 }
 
 const INTERPOLATION_HINT =
@@ -74,6 +75,7 @@ function reportFields(prefix: {
   detail: string;
   howTo: string;
   nextSteps: string;
+  nextStepsExtraHint?: string;
   contextLabel: string;
 }): CopyFieldDef[] {
   const fields: CopyFieldDef[] = [
@@ -118,6 +120,7 @@ function reportFields(prefix: {
       kind: 'rich',
       where: `Closing guidance on the ${prefix.contextLabel} report`,
       interpolates: true,
+      extraHint: prefix.nextStepsExtraHint,
     },
   ];
 
@@ -173,6 +176,7 @@ export const SECTION_COPY_FIELDS: Partial<Record<ContentSection, CopyFieldDef[]>
     detail: 'companyReportDetailHeading',
     howTo: 'reportHowToCompany',
     nextSteps: 'reportNextStepsCompany',
+    nextStepsExtraHint: 'Not currently shown in the live app UI.',
     contextLabel: 'company',
   }),
 };
